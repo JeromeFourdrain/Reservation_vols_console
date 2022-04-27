@@ -16,6 +16,7 @@ List<Flight> flights = new List<Flight>();
 List<Passenger> passengers = new List<Passenger>();
 List<Ticket> tickets = new List<Ticket>();
 
+Random rnd = new Random(); //Objet qui va générer des nombres aléatoires
 GenerateTestDatas();
 
 do
@@ -341,9 +342,64 @@ void GenerateTestDatas()
     passenger = new Passenger("Babette", "Bourgouin", "Rue du Stade 323 5570 Beauraing", Convert.ToDateTime("11/01/80"), "0475 55 02 85");
     passengers.Add(passenger);
 
+    for (int i = 0; i < 5; i++)
+    {
+        GenerateFlight();
+    }
 
+    for (int i = 0; i < 5; i++)
+    {
+        GenerateTicket();
+    }
     
 
 
+}
+
+void GenerateTicket()
+{
+    Flight flight = flights[rnd.Next(flights.Count())];
+
+    Client client = clients[rnd.Next(clients.Count())];
+
+    List<Passenger> passengerstmp = new List<Passenger>(passengers);
+
+    for (int i = 0; i < rnd.Next(1,passengers.Count()); i++)
+    {
+        Passenger passenger = passengerstmp[rnd.Next(passengerstmp.Count())];
+        Ticket ticket = new Ticket(flight, passenger, client);
+        tickets.Add(ticket);
+        passengerstmp.Remove(passenger);
+    }
+    
+}
+
+void GenerateFlight()
+{
+    DateTime date_departure = GenerateDate();
+    DateTime date_arrival;
+
+    do
+    {
+        date_arrival = GenerateDate();
+    } while (date_arrival <= date_departure);
+
+    Airport airport_departure = airports[rnd.Next(airports.Count)];
+    Airport airport_arrival;
+
+    do
+    {
+        airport_arrival = airports[rnd.Next(airports.Count)];
+    } while (airport_arrival == airport_departure);
+
+    Flight flight = new Flight(date_departure, date_arrival, airport_departure, airport_arrival);
+    flights.Add(flight);
+}
+
+DateTime GenerateDate()
+{
+    DateTime end = new DateTime(2024,1,1);
+    int range = (end - DateTime.Today).Days;
+    return  DateTime.Today.AddDays(rnd.Next(range));
 }
     
