@@ -28,5 +28,10 @@ namespace Reservation_vols
             this.Passenger = Passenger;
             this.Client = Client;   
         }
+
+        public override string ToString()
+        {
+            return "Vol du ticket :" + this.Flight + "\n Passager : " + this.Passenger + "\n Nom de la réservation : " + this.Client;
+        }
     }
 }

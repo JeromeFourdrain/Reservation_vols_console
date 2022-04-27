@@ -25,13 +25,13 @@ namespace Reservation_vols
             this.FirstName = FirstName;
             this.LastName = LastName;
             this.Address = Address;
-            this.BirthDate = BirthDate;
+            this.BirthDate = Birthdate;
             this.PhoneNumber = PhoneNumber;
         }
 
         public override string ToString()
         {
-            return String.Format($"Client n° : {ClientId} Nom : {LastName} Prénom : {FirstName} \n Adresse : {Address} Date de naissance : {BirthDate} Numéro de téléphone : {PhoneNumber} ");
+            return String.Format($"Nom : {LastName} Prénom : {FirstName} \n Adresse : {Address} Date de naissance : {BirthDate} Numéro de téléphone : {PhoneNumber} ");
         }
 
         //Test

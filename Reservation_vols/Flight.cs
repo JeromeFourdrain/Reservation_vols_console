@@ -31,8 +31,7 @@ namespace Reservation_vols
 
         public override string ToString()
         {
-            return String.Format($"Vol numéro : {FlightId} \n" +
-                $"Date/heure de départ : {Date_Departure} \n" +
+            return String.Format($"Date/heure de départ : {Date_Departure} \n" +
                 $"Aéroport de départ : {Departure_Airport.Name} \n" +
                 $"Date/heure d'arrivée : {Date_Arrival} \n" +
                 $"Aéroport d'arrivée : {Arrival_Airport.Name}");

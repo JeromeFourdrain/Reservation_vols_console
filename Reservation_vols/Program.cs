@@ -4,6 +4,7 @@
 using Reservation_vols; //on récupère le nom du namespace qui englobe les classes dont on a besoin
 
 
+
 int choix = 0;
 bool verif = false;
 bool quit = false;
@@ -11,12 +12,16 @@ bool quit = false;
 Compagnie_Aerienne compagnie = new Compagnie_Aerienne("Brussel Airlines"); //Appel du constructeur de la classe COmpagnie a"érienne
 List<Airport> airports = new List<Airport>();
 List<Client> clients = new List<Client>();
-List<Flight> flights = new List<Flight>();  
+List<Flight> flights = new List<Flight>();
+List<Passenger> passengers = new List<Passenger>();
+List<Ticket> tickets = new List<Ticket>();
+
+GenerateTestDatas();
 
 do
 {
     Console.WriteLine("Faites votre choix :"); 
-    Console.WriteLine("1) Ajouter un aéroport \n 2) Afficher les aéroports \n 3) Ajouter un client \n 4) Afficher les clients \n 5) AJouter un vol \n 6) Afficher les vols");
+    Console.WriteLine("1) Ajouter un aéroport \n 2) Afficher les aéroports \n 3) Ajouter un client \n 4) Afficher les clients \n 5) Ajouter un vol \n 6) Afficher les vols \n 7) Ajouter une réservation \n 8) Afficher les réservations");
     verif = int.TryParse(Console.ReadLine(), out choix);
     switch (choix)
     {
@@ -37,6 +42,12 @@ do
             break;
         case 6:
             DisplayFlights();
+            break;
+        case 7:
+            AddTicket();
+            break;
+        case 8:
+            DisplayTickets();
             break;
         default:
             break;
@@ -158,7 +169,6 @@ void AddFlight()
     {
         Console.WriteLine("Impossible d'ajouter un vol sans deux aéroports différents !!");
     }
-    Console.WriteLine();
 }
 
 void DisplayFlights()
@@ -191,4 +201,149 @@ Airport ChoiceAirport(string type, Airport NotAvailable = null)
     return airports[choix-1];
 }
 
+void AddTicket()
+{
+
+    int choix = 0;
+    int choix2 = 0;
+    string confirmation = "false";
+    bool otherpassenger = false;
+
+    Passenger passenger = null;
+
+    if (flights.Count() >= 1 && clients.Count() >= 1)
+    {
+        int cpt = 1;
+        
+        foreach (Client client in clients)
+        {
+            Console.WriteLine($"Client n° {cpt} " + client.ToString());
+            cpt++;
+        }
+        do
+        {
+            Console.WriteLine("Quel client passe la réservation ?");
+            bool verif = int.TryParse(Console.ReadLine(), out choix);
+        } while (!verif || choix < 1 || choix > clients.Count());
+
+        cpt = 1;
+        foreach(Flight flight in flights)
+        {
+            Console.WriteLine($"Vol n° {cpt} " + flight.ToString());
+            cpt++;
+        }
+        do
+        {
+            Console.WriteLine("Pour quel vol souhaitez vous réserver ?");
+            bool verif = int.TryParse(Console.ReadLine(), out choix2);
+        } while (!verif || choix2 < 1 || choix2 > flights.Count());
+
+        Console.Clear();
+
+        cpt = 1;
+
+        do
+        {
+            otherpassenger = false;
+            Console.WriteLine("Veuillez encoder le prénom du passager :");
+            string firstname = Console.ReadLine();
+            Console.WriteLine("Veuillez encoder le nom du passager :");
+            string lastname = Console.ReadLine();
+            Console.WriteLine("Veuillez encoder l'adresse du passager : " + firstname + " " + lastname);
+            string address = Console.ReadLine();
+            Console.WriteLine($"Veuillez encoder la date naissance de {firstname} {lastname} (JJ/MM/AA)"); //TODO : Exception mauvais format de date
+            DateTime birthdate = Convert.ToDateTime(Console.ReadLine());
+            Console.WriteLine("Veuillez encoder le numéro de téléphone :");
+            string phonenumber = Console.ReadLine();
+
+            passenger = new Passenger(firstname, lastname, address, birthdate, phonenumber);
+            Console.Clear();
+            Console.WriteLine("Nouveau ticket : ");
+            Console.WriteLine(flights[choix2 - 1]);
+            Console.WriteLine(passenger);
+            Console.WriteLine("Confirmez vous les informations : (oui/non)");
+            confirmation = Console.ReadLine();
+            if(confirmation == "oui")
+            {
+                Ticket ticket = new Ticket(flights[choix2 - 1], passenger, clients[choix - 1]);
+                tickets.Add(ticket);
+            }
+            Console.WriteLine("Est-ce qu'il y a un autre passager ? (oui/non)");
+            confirmation = Console.ReadLine();
+            if (confirmation == "oui")
+                otherpassenger = true;
+        } while (otherpassenger);
+        
+    }
+    else
+    {
+        Console.WriteLine("Impossible de passer une réservation sans client ou sans vol encodés !!");
+    }
+
+}
+
+void DisplayTickets()
+{
+    foreach(Ticket ticket in tickets)
+    {
+        Console.WriteLine(ticket);
+    }
+}
+
+void GenerateTestDatas()
+{
+    Airport airport1 = new Airport("Brussels South Charleroi Airport", "Charleroi, Belgium" );
+    Airport airport2 = new Airport("Aéroport de Bruxelles", "Zaventem");
+    Airport airport3 = new Airport("Aéroport de Lille-Lesquin", "Lesquin, France");
+    Airport airport4 = new Airport("Aéroport Roissy-Charles-De-Gaulle", "Paris");
+    Airport airport5 = new Airport("Aéroport Barcelone-El Prat", "Barcelone, Espagne");
+    Airport airport6 = new Airport("Aéroport international du roi Fahd", "Dammam, Arabie Saoudite");
+    Airport airport7 = new Airport("Aéroport international de Denver", "Denver, Etats-unis");
+    Airport airport8 = new Airport("Aéroport de Rome Fiumicino", "Rome, Latium, Italia");
+    airports.Add(airport1);
+    airports.Add(airport2);
+    airports.Add(airport3);
+    airports.Add(airport4);
+    airports.Add(airport5);
+    airports.Add(airport6);
+    airports.Add(airport7);
+    airports.Add(airport8);
+    Client client1 = new Client("Ethan", "Arix","Rue d'Estinnes, La louviere", Convert.ToDateTime("25/03/98"), "0478256423");
+    Client client2 = new Client("Paul", "Pirotte", "Rue de Binche, Leval-Trahegnies", Convert.ToDateTime("14/02/91"), "0472254423");
+    Client client3 = new Client("Joseph", "Assez", "Rue de Binche, Mont-St-Geneviève", Convert.ToDateTime("14/02/83"), "0478256423");
+    Client client4 = new Client("Jérémy", "Lambrecq", "Rue de Leval, Binche", Convert.ToDateTime("28/12/99"), "0468216224");
+    Client client5 = new Client("Gavin", "Chaineux", "Rue de loin d'ici, Far far away", Convert.ToDateTime("10/03/91"), "046164223");
+    Client client6 = new Client("Anthony", "Paduwat", "Rue de Mons, La louviere", Convert.ToDateTime("14/04/00"), "0468256321");
+    Client client7 = new Client("Brandon", "Limbourg", "Rue de La Louvière, Trivières", Convert.ToDateTime("15/02/98"), "0478256423");
+    clients.Add(client1);
+    clients.Add(client2);
+    clients.Add(client3);
+    clients.Add(client4);
+    clients.Add(client5);
+    clients.Add(client6);
+    clients.Add(client7);
+    Passenger passenger = new Passenger("Marsilius", "Routhier", "Place Léopold 220 3020 Herent", Convert.ToDateTime("10/03/97"), "0494 51 65 83");
+    passengers.Add(passenger);
+    passenger = new Passenger("Thiery", "Vachon", "Booischotseweg 398 5370 Jeneffe", Convert.ToDateTime("25/12/55"), "0496 39 81 70");
+    passengers.Add(passenger);
+    passenger = new Passenger("Gaston", "Mainville", "Rue de Sy 204 5370 Flostoy", Convert.ToDateTime("29/10/97"), "0482 68 67 26");
+    passengers.Add(passenger);
+    passenger = new Passenger("Charmaine", "Arcouet", "Avenue Emile Vandervelde 197 7623 Rongy", Convert.ToDateTime("14/12/68"), "0498 46 51 07");
+    passengers.Add(passenger);
+    passenger = new Passenger("Mirabelle", "Caouette", "Rue de Baras 220 3272 Testelt", Convert.ToDateTime("13/06/61"), "0487 99 43 57");
+    passengers.Add(passenger);
+    passenger = new Passenger("Grégoire", "Couture", "Rue du Château 262 1357 Linsmeau", Convert.ToDateTime("27/09/82"), "0483 32 99 15");
+    passengers.Add(passenger);
+    passenger = new Passenger("Laurence", "Bélair", "Rue Fosse Piron 283 4780 Sankt Vith", Convert.ToDateTime("22/07/62"), "0488 42 10 48");
+    passengers.Add(passenger);
+    passenger = new Passenger("Corinne", "Sarrazin", "Herentalsebaan 154 1140 Brussel", Convert.ToDateTime("14/12/79"), "0472 25 66 43");
+    passengers.Add(passenger);
+    passenger = new Passenger("Babette", "Bourgouin", "Rue du Stade 323 5570 Beauraing", Convert.ToDateTime("11/01/80"), "0475 55 02 85");
+    passengers.Add(passenger);
+
+
+    
+
+
+}
     

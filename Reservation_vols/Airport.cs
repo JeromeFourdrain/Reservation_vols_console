@@ -19,7 +19,7 @@ namespace Reservation_vols
 
         public override string ToString()
         {
-            return String.Format("Name : {0} Addresse : {1}", this.Name, this.Address);
+            return String.Format("Name : {0} Adresse : {1}", this.Name, this.Address);
         }
     }
 }
