@@ -8,7 +8,7 @@ namespace Reservation_vols
 {
     internal class Client
     {
-        public int ClientId { get; private set; }
+        public int ClientId { get; set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
 
@@ -19,9 +19,9 @@ namespace Reservation_vols
         public string PhoneNumber { get; private set; }
 
 
-        public Client(string FirstName, string LastName, string Address, DateTime Birthdate, string PhoneNumber)
+        public Client(string FirstName, string LastName, string Address, DateTime Birthdate, string PhoneNumber, int ClientId = 0)
         {
-            ClientId = 0;   
+            this.ClientId = ClientId;  
             this.FirstName = FirstName;
             this.LastName = LastName;
             this.Address = Address;
@@ -34,6 +34,6 @@ namespace Reservation_vols
             return String.Format($"Nom : {LastName} Prénom : {FirstName} \n Adresse : {Address} Date de naissance : {BirthDate} Numéro de téléphone : {PhoneNumber} ");
         }
 
-        //Test
+
     }
 }

@@ -2,7 +2,8 @@
 
 
 using Reservation_vols; //on récupère le nom du namespace qui englobe les classes dont on a besoin
-
+using Npgsql;
+using Reservation_vols.CRUD;
 
 
 int choix = 0;
@@ -18,6 +19,17 @@ List<Ticket> tickets = new List<Ticket>();
 
 Random rnd = new Random(); //Objet qui va générer des nombres aléatoires
 GenerateTestDatas();
+
+
+
+ClientDB test = new ClientDB();
+
+clients.AddRange(test.GetAll());
+
+foreach(Client client in clients)
+{
+    test.Insert(client);
+}
 
 do
 {
@@ -311,11 +323,11 @@ void GenerateTestDatas()
     airports.Add(airport8);
     Client client1 = new Client("Ethan", "Arix","Rue d'Estinnes, La louviere", Convert.ToDateTime("25/03/98"), "0478256423");
     Client client2 = new Client("Paul", "Pirotte", "Rue de Binche, Leval-Trahegnies", Convert.ToDateTime("14/02/91"), "0472254423");
-    Client client3 = new Client("Joseph", "Assez", "Rue de Binche, Mont-St-Geneviève", Convert.ToDateTime("14/02/83"), "0478256423");
-    Client client4 = new Client("Jérémy", "Lambrecq", "Rue de Leval, Binche", Convert.ToDateTime("28/12/99"), "0468216224");
+    Client client3 = new Client("Joseph", "Assez", "Rue de Binche, Mont-St-Geneviève", Convert.ToDateTime("14/02/83"), "0468256423");
+    Client client4 = new Client("Jérémy", "Lambrecq", "Rue de Leval, Binche", Convert.ToDateTime("28/12/99"), "0458216224");
     Client client5 = new Client("Gavin", "Chaineux", "Rue de loin d'ici, Far far away", Convert.ToDateTime("10/03/91"), "046164223");
-    Client client6 = new Client("Anthony", "Paduwat", "Rue de Mons, La louviere", Convert.ToDateTime("14/04/00"), "0468256321");
-    Client client7 = new Client("Brandon", "Limbourg", "Rue de La Louvière, Trivières", Convert.ToDateTime("15/02/98"), "0478256423");
+    Client client6 = new Client("Anthony", "Paduwat", "Rue de Mons, La louviere", Convert.ToDateTime("14/04/00"), "0488256321");
+    Client client7 = new Client("Brandon", "Limbourg", "Rue de La Louvière, Trivières", Convert.ToDateTime("15/02/98"), "0478716423");
     clients.Add(client1);
     clients.Add(client2);
     clients.Add(client3);
