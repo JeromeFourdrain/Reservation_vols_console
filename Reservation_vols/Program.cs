@@ -18,18 +18,18 @@ List<Passenger> passengers = new List<Passenger>();
 List<Ticket> tickets = new List<Ticket>();
 
 Random rnd = new Random(); //Objet qui va générer des nombres aléatoires
-GenerateTestDatas();
+//GenerateTestDatas();
 
 
 
-ClientDB test = new ClientDB();
+//ClientDB test = new ClientDB();
 
-clients.AddRange(test.GetAll());
+//clients.AddRange(test.GetAll());
 
-foreach(Client client in clients)
-{
-    test.Insert(client);
-}
+//foreach(Client client in clients)
+//{
+//    test.Insert(client);
+//}
 
 do
 {
@@ -98,6 +98,10 @@ void AddAirport()
     string address = Console.ReadLine();
     Airport airport1 = new Airport(name, address);
     airports.Add(airport1);
+
+    AirportDB airportdb = new AirportDB();
+    airportdb.Insert(airport1);
+
     Console.WriteLine("Aéroport correctement ajouté !");
 
 }
@@ -133,6 +137,9 @@ void AddClient()
 
     Client client = new Client(firstname, lastname, address, birthdate, phonenumber);
     clients.Add(client);
+
+    ClientDB clientdb = new ClientDB();
+    clientdb.Insert(client);
 
     Console.WriteLine("Client correctement ajouté !");
 

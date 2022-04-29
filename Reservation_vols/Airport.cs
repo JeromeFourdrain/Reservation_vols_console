@@ -8,6 +8,7 @@ namespace Reservation_vols
 {
     internal class Airport
     {
+        public int AirportId { get; set; }
         public string Name { get; private set; }
         public string Address { get; private set; }
 
