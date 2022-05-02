@@ -34,6 +34,7 @@ namespace Reservation_vols.CRUD
 
                     c.Open();
                     airport.AirportId = (int)cmd.ExecuteScalar(); //On récupère une valeur (id) donc on utilise ExecuteScalar
+                    //cmd.ExecuteNonQuery(); Renvoie le nombre de lignes modifiées
                 }
                 
             }
@@ -48,8 +49,28 @@ namespace Reservation_vols.CRUD
 
         public List<Airport> GetAll()
         {
-            //Code qui va récupérer tous les aéroports
-            return null;
+            List<Airport> airports = new List<Airport>();
+            
+            using(NpgsqlConnection c = new NpgsqlConnection(ConnectionString))
+            {
+                using(NpgsqlCommand cmd = c.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT airportid, name, address FROM airports";
+                    c.Open();
+
+                    using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Airport airport = new Airport((int)reader[0], (string)reader[1], (string)reader[2]);
+                            airports.Add(airport);
+                        }
+                    }
+                }
+            }
+
+
+            return airports;
         }
 
         public void Update(Airport airport)

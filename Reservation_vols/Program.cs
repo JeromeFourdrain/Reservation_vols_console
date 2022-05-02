@@ -10,8 +10,14 @@ int choix = 0;
 bool verif = false;
 bool quit = false;
 
-Compagnie_Aerienne compagnie = new Compagnie_Aerienne("Brussel Airlines"); //Appel du constructeur de la classe COmpagnie a"érienne
 List<Airport> airports = new List<Airport>();
+
+AirportDB airportDB = new AirportDB();
+
+airports.AddRange(airportDB.GetAll());
+
+
+
 List<Client> clients = new List<Client>();
 List<Flight> flights = new List<Flight>();
 List<Passenger> passengers = new List<Passenger>();
@@ -183,6 +189,10 @@ void AddFlight()
         flights.Add(flight);
         
 
+        FlightDB flightdb = new FlightDB();
+        flightdb.Insert(flight);
+
+        Console.WriteLine("Aéroport correctement ajouté !");
 
     }
     else
@@ -229,7 +239,7 @@ void AddTicket()
     string confirmation = "false";
     bool otherpassenger = false;
 
-    Passenger passenger = null;
+    Client passenger = null;
 
     if (flights.Count() >= 1 && clients.Count() >= 1)
     {
@@ -276,7 +286,7 @@ void AddTicket()
             Console.WriteLine("Veuillez encoder le numéro de téléphone :");
             string phonenumber = Console.ReadLine();
 
-            passenger = new Passenger(firstname, lastname, address, birthdate, phonenumber);
+            passenger = new Client(firstname, lastname, address, birthdate, phonenumber);
             Console.Clear();
             Console.WriteLine("Nouveau ticket : ");
             Console.WriteLine(flights[choix2 - 1]);
@@ -381,11 +391,11 @@ void GenerateTicket()
 
     Client client = clients[rnd.Next(clients.Count())];
 
-    List<Passenger> passengerstmp = new List<Passenger>(passengers);
+    List<Client> passengerstmp = new List<Client>(passengers);
 
     for (int i = 0; i < rnd.Next(1,passengers.Count()); i++)
     {
-        Passenger passenger = passengerstmp[rnd.Next(passengerstmp.Count())];
+        Client passenger = passengerstmp[rnd.Next(passengerstmp.Count())];
         Ticket ticket = new Ticket(flight, passenger, client);
         tickets.Add(ticket);
         passengerstmp.Remove(passenger);

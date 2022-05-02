@@ -8,7 +8,7 @@ namespace Reservation_vols
 {
     internal class Flight
     {
-        public int FlightId { get; private set; }
+        public int FlightId { get; set; }
 
         public bool IsOpen { get; private set; }
         public DateTime Date_Departure { get; private set; }

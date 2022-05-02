@@ -100,11 +100,11 @@ namespace Reservation_vols.CRUD
                         while (reader.Read())
                         {
                             int clientId = (int)reader[0];
-                            string? firstname = reader[1].ToString();
-                            string? lastname = reader[2].ToString();
-                            string? address = reader[3].ToString();
+                            string? firstname = (string)reader[1];
+                            string? lastname = (string)reader[2];
+                            string? address = (string)reader[3];
                             DateTime birthdate = (DateTime)reader[4];
-                            string? phonenumber = reader[5].ToString();
+                            string? phonenumber = (string)reader[5];
                             client = new Client(firstname, lastname, address, birthdate, phonenumber, clientId);
                             clients.Add(client);
                         }

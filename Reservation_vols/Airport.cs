@@ -18,6 +18,13 @@ namespace Reservation_vols
             this.Address = Address;
         }
 
+        public Airport(int AirportId, string Name, string Address)
+        {
+            this.AirportId = AirportId;
+            this.Name = Name;
+            this.Address = Address;
+        }
+
         public override string ToString()
         {
             return String.Format("Name : {0} Adresse : {1}", this.Name, this.Address);

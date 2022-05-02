@@ -8,16 +8,16 @@ namespace Reservation_vols
 {
     internal class Ticket
     {
-        public int TicketId { get; private set; }
+        public int TicketId { get; set; }
         public bool IsConfirmed { get; private set; }
 
         public Flight Flight { get; private set; }
 
         public Client Client  { get; private set; }
 
-        public Passenger Passenger { get; private set; }
+        public Client Passenger { get; private set; }
 
-        public Ticket(Flight Flight, Passenger Passenger, Client Client)
+        public Ticket(Flight Flight, Client Passenger, Client Client)
         {
             TicketId = 0;
 
