@@ -43,8 +43,35 @@ namespace Reservation_vols.CRUD
 
         public Airport GetById(int id)
         {
-            //Code qui va récupérer un aéroport dans la DB
-            return null;
+            Airport airport = null;
+            using (NpgsqlConnection c = new NpgsqlConnection(ConnectionString))
+            {
+                using(NpgsqlCommand cmd = c.CreateCommand())
+                {
+                    
+                    cmd.CommandText = "SELECT airportid, name, address FROM airports WHERE airportid = @airportid";
+
+                    c.Open();
+
+                    NpgsqlParameter p = new NpgsqlParameter
+                    {
+                        ParameterName="airportid",
+                        Value = id
+                    };
+                    cmd.Parameters.Add(p);
+
+                    using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        airport = new Airport((int)reader[0], (string)reader[1], (string)reader[2]);
+
+                    }
+
+                }
+                
+            }
+            return airport;
         }
 
         public List<Airport> GetAll()

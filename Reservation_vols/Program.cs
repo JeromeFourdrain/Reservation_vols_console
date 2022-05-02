@@ -6,36 +6,53 @@ using Npgsql;
 using Reservation_vols.CRUD;
 
 
-int choix = 0;
-bool verif = false;
-bool quit = false;
 
+
+/// <summary>
+/// Airports
+/// </summary>
 List<Airport> airports = new List<Airport>();
 
 AirportDB airportDB = new AirportDB();
 
 airports.AddRange(airportDB.GetAll());
 
-
-
+/// <summary>
+/// Clients
+/// </summary>
 List<Client> clients = new List<Client>();
+
+ClientDB ClientDB = new ClientDB();
+
+clients.AddRange(ClientDB.GetAll());
+
+/// <summary>
+/// Flights
+/// </summary>
 List<Flight> flights = new List<Flight>();
-List<Passenger> passengers = new List<Passenger>();
+
+FlightDB FlightDB = new FlightDB();
+
+flights.AddRange(FlightDB.GetAll());
+
+/// <summary>
+/// Tickets
+/// </summary>
 List<Ticket> tickets = new List<Ticket>();
+
+TicketDB TicketDB = new TicketDB();
+
+tickets.AddRange(TicketDB.GetAll());
+
+List<Passenger> passengers = new List<Passenger>();
+
+
+int choix = 0;
+bool verif = false;
+bool quit = false;
 
 Random rnd = new Random(); //Objet qui va générer des nombres aléatoires
 //GenerateTestDatas();
-
-
-
-//ClientDB test = new ClientDB();
-
-//clients.AddRange(test.GetAll());
-
-//foreach(Client client in clients)
-//{
-//    test.Insert(client);
-//}
 
 do
 {
@@ -192,7 +209,7 @@ void AddFlight()
         FlightDB flightdb = new FlightDB();
         flightdb.Insert(flight);
 
-        Console.WriteLine("Aéroport correctement ajouté !");
+        Console.WriteLine("Vol correctement ajouté !");
 
     }
     else
@@ -287,6 +304,8 @@ void AddTicket()
             string phonenumber = Console.ReadLine();
 
             passenger = new Client(firstname, lastname, address, birthdate, phonenumber);
+            ClientDB.Insert(passenger);
+
             Console.Clear();
             Console.WriteLine("Nouveau ticket : ");
             Console.WriteLine(flights[choix2 - 1]);
@@ -297,6 +316,8 @@ void AddTicket()
             {
                 Ticket ticket = new Ticket(flights[choix2 - 1], passenger, clients[choix - 1]);
                 tickets.Add(ticket);
+                TicketDB.Insert(ticket);
+
             }
             Console.WriteLine("Est-ce qu'il y a un autre passager ? (oui/non)");
             confirmation = Console.ReadLine();

@@ -19,9 +19,9 @@ namespace Reservation_vols
 
         public Airport Arrival_Airport { get; set; }
 
-        public Flight(DateTime departure, DateTime arrival, Airport Departure_Airport, Airport Arrival_Airport)
+        public Flight(DateTime departure, DateTime arrival, Airport Departure_Airport, Airport Arrival_Airport, int flightid = 0)
         {
-            FlightId = 0;
+            this.FlightId = flightid;
             IsOpen = true;
             this.Date_Arrival = arrival;
             this.Date_Departure = departure;
