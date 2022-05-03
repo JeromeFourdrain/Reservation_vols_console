@@ -30,9 +30,9 @@ airports.AddRange(airportDB.GetAll());
 /// </summary>
 List<Client> clients = new List<Client>();
 
-ClientDB ClientDB = new ClientDB();
+ClientDB clientDB = new ClientDB();
 
-clients.AddRange(ClientDB.GetAll());
+clients.AddRange(clientDB.GetAll());
 
 /// <summary>
 /// Flights
@@ -46,9 +46,9 @@ flights.AddRange(flightDB.GetAll());
 /// </summary>
 List<Ticket> tickets = new List<Ticket>();
 
-TicketDB TicketDB = new TicketDB();
+TicketDB ticketDB = new TicketDB();
 
-tickets.AddRange(TicketDB.GetAll());
+tickets.AddRange(ticketDB.GetAll());
 
 List<Passenger> passengers = new List<Passenger>();
 
@@ -333,7 +333,7 @@ void AddTicket()
             string phonenumber = Console.ReadLine();
 
             passenger = new Client(firstname, lastname, address, birthdate, phonenumber);
-            ClientDB.Insert(passenger);
+            clientDB.Insert(passenger);
 
             Console.Clear();
             Console.WriteLine("Nouveau ticket : ");
@@ -345,7 +345,7 @@ void AddTicket()
             {
                 Ticket ticket = new Ticket(flights[choix2 - 1], passenger, clients[choix - 1]);
                 tickets.Add(ticket);
-                TicketDB.Insert(ticket);
+                ticketDB.Insert(ticket);
 
             }
             Console.WriteLine("Est-ce qu'il y a un autre passager ? (oui/non)");
@@ -388,6 +388,10 @@ void GenerateTestDatas()
     airports.Add(airport6);
     airports.Add(airport7);
     airports.Add(airport8);
+    foreach(Airport airport in airports)
+    {
+        airportDB.Insert(airport);
+    }
     Client client1 = new Client("Ethan", "Arix","Rue d'Estinnes, La louviere", Convert.ToDateTime("25/03/98"), "0478256423");
     Client client2 = new Client("Paul", "Pirotte", "Rue de Binche, Leval-Trahegnies", Convert.ToDateTime("14/02/91"), "0472254423");
     Client client3 = new Client("Joseph", "Assez", "Rue de Binche, Mont-St-Geneviève", Convert.ToDateTime("14/02/83"), "0468256423");
@@ -402,24 +406,30 @@ void GenerateTestDatas()
     clients.Add(client5);
     clients.Add(client6);
     clients.Add(client7);
-    Passenger passenger = new Passenger("Marsilius", "Routhier", "Place Léopold 220 3020 Herent", Convert.ToDateTime("10/03/97"), "0494 51 65 83");
-    passengers.Add(passenger);
+    
+    Client passenger = new Client("Marsilius", "Routhier", "Place Léopold 220 3020 Herent", Convert.ToDateTime("10/03/97"), "0494 51 65 83");
+    clients.Add(passenger);
     passenger = new Passenger("Thiery", "Vachon", "Booischotseweg 398 5370 Jeneffe", Convert.ToDateTime("25/12/55"), "0496 39 81 70");
-    passengers.Add(passenger);
+    clients.Add(passenger);
     passenger = new Passenger("Gaston", "Mainville", "Rue de Sy 204 5370 Flostoy", Convert.ToDateTime("29/10/97"), "0482 68 67 26");
-    passengers.Add(passenger);
+    clients.Add(passenger);
     passenger = new Passenger("Charmaine", "Arcouet", "Avenue Emile Vandervelde 197 7623 Rongy", Convert.ToDateTime("14/12/68"), "0498 46 51 07");
-    passengers.Add(passenger);
+    clients.Add(passenger);
     passenger = new Passenger("Mirabelle", "Caouette", "Rue de Baras 220 3272 Testelt", Convert.ToDateTime("13/06/61"), "0487 99 43 57");
-    passengers.Add(passenger);
+    clients.Add(passenger);
     passenger = new Passenger("Grégoire", "Couture", "Rue du Château 262 1357 Linsmeau", Convert.ToDateTime("27/09/82"), "0483 32 99 15");
-    passengers.Add(passenger);
+    clients.Add(passenger);
     passenger = new Passenger("Laurence", "Bélair", "Rue Fosse Piron 283 4780 Sankt Vith", Convert.ToDateTime("22/07/62"), "0488 42 10 48");
-    passengers.Add(passenger);
+    clients.Add(passenger);
     passenger = new Passenger("Corinne", "Sarrazin", "Herentalsebaan 154 1140 Brussel", Convert.ToDateTime("14/12/79"), "0472 25 66 43");
-    passengers.Add(passenger);
+    clients.Add(passenger);
     passenger = new Passenger("Babette", "Bourgouin", "Rue du Stade 323 5570 Beauraing", Convert.ToDateTime("11/01/80"), "0475 55 02 85");
-    passengers.Add(passenger);
+    clients.Add(passenger);
+
+    foreach (Client client in clients)
+    {
+        clientDB.Insert(client);
+    }
 
     for (int i = 0; i < 5; i++)
     {
@@ -441,13 +451,14 @@ void GenerateTicket()
 
     Client client = clients[rnd.Next(clients.Count())];
 
-    List<Client> passengerstmp = new List<Client>(passengers);
+    List<Client> passengerstmp = new List<Client>(clients);
 
-    for (int i = 0; i < rnd.Next(1,passengers.Count()); i++)
+    for (int i = 0; i < rnd.Next(1,clients.Count()); i++)
     {
         Client passenger = passengerstmp[rnd.Next(passengerstmp.Count())];
         Ticket ticket = new Ticket(flight, passenger, client);
         tickets.Add(ticket);
+        ticketDB.Insert(ticket);
         passengerstmp.Remove(passenger);
     }
     
@@ -473,6 +484,7 @@ void GenerateFlight()
 
     Flight flight = new Flight(date_departure, date_arrival, airport_departure, airport_arrival);
     flights.Add(flight);
+    flightDB.Insert(flight);
 }
 
 DateTime GenerateDate()
