@@ -57,7 +57,8 @@ namespace Reservation_vols.CRUD
                                       "airport_arrival_id, arr.name AS arrival_name, arr.address AS arrival_address " +
                                       "FROM flights " +
                                       "JOIN airports AS dep ON airport_departure_id = dep.airportid " +
-                                      "JOIN airports AS arr ON airport_arrival_id = arr.airportid";
+                                      "JOIN airports AS arr ON airport_arrival_id = arr.airportid " +
+                                      "WHERE isopen = true ;";
 
                     c.Open();
                     using (NpgsqlDataReader reader = cmd.ExecuteReader())
@@ -83,7 +84,32 @@ namespace Reservation_vols.CRUD
 
         public void Delete(Flight flight)
         {
+            using (NpgsqlConnection c = new NpgsqlConnection(ConnectionString))
+            {
+                using (NpgsqlCommand cmd = c.CreateCommand())
+                {
+                    cmd.CommandText = $"UPDATE flights SET isopen = false WHERE flightid = {flight.FlightId};";
 
+                    c.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void ClosePastFlights()
+        {
+            using (NpgsqlConnection c = new NpgsqlConnection(ConnectionString))
+            {
+                using(NpgsqlCommand cmd = c.CreateCommand())
+                {
+                    cmd.CommandText = "UPDATE flights SET isopen = false WHERE date_departure<NOW();";
+
+                    c.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                }
+            }
+
+                
         }
     }
 }

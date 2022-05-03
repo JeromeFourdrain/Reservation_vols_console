@@ -6,6 +6,14 @@ using Npgsql;
 using Reservation_vols.CRUD;
 
 
+FlightDB flightDB = new FlightDB();
+
+
+/// <summary>
+/// Airports
+/// </summary>
+flightDB.ClosePastFlights();
+
 
 
 /// <summary>
@@ -31,9 +39,7 @@ clients.AddRange(ClientDB.GetAll());
 /// </summary>
 List<Flight> flights = new List<Flight>();
 
-FlightDB FlightDB = new FlightDB();
-
-flights.AddRange(FlightDB.GetAll());
+flights.AddRange(flightDB.GetAll());
 
 /// <summary>
 /// Tickets
@@ -57,7 +63,7 @@ Random rnd = new Random(); //Objet qui va générer des nombres aléatoires
 do
 {
     Console.WriteLine("Faites votre choix :"); 
-    Console.WriteLine("1) Ajouter un aéroport \n 2) Afficher les aéroports \n 3) Ajouter un client \n 4) Afficher les clients \n 5) Ajouter un vol \n 6) Afficher les vols \n 7) Ajouter une réservation \n 8) Afficher les réservations");
+    Console.WriteLine("1) Ajouter un aéroport \n 2) Afficher les aéroports \n 3) Ajouter un client \n 4) Afficher les clients \n 5) Ajouter un vol \n 6) Afficher les vols \n 7) Ajouter une réservation \n 8) Afficher les réservations \n 9) Supprimer un vol");
     verif = int.TryParse(Console.ReadLine(), out choix);
     switch (choix)
     {
@@ -84,6 +90,9 @@ do
             break;
         case 8:
             DisplayTickets();
+            break;
+        case 9:
+            DeleteFlight();
             break;
         default:
             break;
@@ -246,6 +255,26 @@ Airport ChoiceAirport(string type, Airport NotAvailable = null)
     } while (!verif || choix < 1 || choix > airports.Count() || choix == choice_anavailable);
 
     return airports[choix-1];
+}
+
+Flight ChoiceFlight(string type)
+{
+    int cpt = 1;
+    int choix;
+
+    foreach (Flight flight in flights)
+    {
+
+        Console.WriteLine($"Vol n° {cpt} :" + flight.ToString());
+        cpt++;
+    }
+    do
+    {
+        Console.WriteLine($"Quel est le numéro de vol {type} :");
+        verif = int.TryParse(Console.ReadLine(), out choix);
+    } while (!verif || choix < 1 || choix > flights.Count());
+
+    return flights[choix - 1];
 }
 
 void AddTicket()
@@ -452,4 +481,12 @@ DateTime GenerateDate()
     int range = (end - DateTime.Today).Days;
     return  DateTime.Today.AddDays(rnd.Next(range));
 }
-    
+
+void DeleteFlight()
+{
+    Flight flight = ChoiceFlight("à supprimer");
+
+    flightDB.Delete(flight);
+    flights.Remove(flight);
+
+}

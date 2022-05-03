@@ -65,6 +65,7 @@ namespace Reservation_vols.CRUD
                     cmd.CommandText = "SELECT clientId, firstname, lastname, address, birthdate, phonenumber FROM clients WHERE id = " + id;
 
                     c.Open();
+
                     using(NpgsqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
