@@ -9,14 +9,14 @@ namespace Reservation_vols
     internal class Client
     {
         public int ClientId { get; set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-        public string Address { get; private set; }
+        public string Address { get; set; }
 
-        public DateTime BirthDate { get; private set; }
+        public DateTime BirthDate { get; set; }
 
-        public string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; set; }
 
 
         public Client(string FirstName, string LastName, string Address, DateTime Birthdate, string PhoneNumber, int ClientId = 0)

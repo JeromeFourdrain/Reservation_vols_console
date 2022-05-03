@@ -118,7 +118,48 @@ namespace Reservation_vols.CRUD
 
         public void Update(Client client)
         {
+            using(NpgsqlConnection c = new NpgsqlConnection(ConnectionString))
+            {
+                using(NpgsqlCommand cmd = c.CreateCommand())
+                {
+                    cmd.CommandText = $"UPDATE clients SET firstname = @firstname, lastname = @lastname, address = @address, birthdate = @birthdate, phonenumber = @phonenumber WHERE clientid = {client.ClientId} ";
 
+                    NpgsqlParameter Pfirstname = new NpgsqlParameter()
+                    {
+                        ParameterName = "firstname",
+                        Value = client.FirstName
+                    };
+                    NpgsqlParameter Plastname = new NpgsqlParameter()
+                    {
+                        ParameterName = "lastname",
+                        Value = client.LastName
+                    };
+                    NpgsqlParameter Paddress = new NpgsqlParameter()
+                    {
+                        ParameterName = "address",
+                        Value = client.Address
+                    };
+                    NpgsqlParameter Pbirthdate = new NpgsqlParameter()
+                    {
+                        ParameterName = "birthdate",
+                        Value = client.BirthDate
+                    };
+                    NpgsqlParameter Pphonenumber = new NpgsqlParameter()
+                    {
+                        ParameterName = "phonenumber",
+                        Value = client.PhoneNumber
+                    };
+
+                    cmd.Parameters.Add(Pfirstname);
+                    cmd.Parameters.Add(Plastname);
+                    cmd.Parameters.Add(Paddress);
+                    cmd.Parameters.Add(Pbirthdate);
+                    cmd.Parameters.Add(Pphonenumber);
+
+                    c.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Delete(Client client)

@@ -63,7 +63,7 @@ Random rnd = new Random(); //Objet qui va générer des nombres aléatoires
 do
 {
     Console.WriteLine("Faites votre choix :"); 
-    Console.WriteLine("1) Ajouter un aéroport \n 2) Afficher les aéroports \n 3) Ajouter un client \n 4) Afficher les clients \n 5) Ajouter un vol \n 6) Afficher les vols \n 7) Ajouter une réservation \n 8) Afficher les réservations \n 9) Supprimer un vol");
+    Console.WriteLine("1) Ajouter un aéroport \n 2) Afficher les aéroports \n 3) Ajouter un client \n 4) Afficher les clients \n 5) Ajouter un vol \n 6) Afficher les vols \n 7) Ajouter une réservation \n 8) Afficher les réservations \n 9) Supprimer un vol \n 10) Modifier un client ");
     verif = int.TryParse(Console.ReadLine(), out choix);
     switch (choix)
     {
@@ -93,6 +93,9 @@ do
             break;
         case 9:
             DeleteFlight();
+            break;
+        case 10:
+            UpdateClient();
             break;
         default:
             break;
@@ -501,4 +504,82 @@ void DeleteFlight()
     flightDB.Delete(flight);
     flights.Remove(flight);
 
+}
+
+void UpdateClient()
+{
+    Client client = null;
+    int choixModif;
+    bool quit = false;
+    bool verif = false;
+
+    client = ChoiceClient();
+
+    do
+    {
+        Console.WriteLine("Que voulez vous modifier ?: ");
+        Console.WriteLine($@"1- Prenom : {client.FirstName}
+2- Nom : {client.LastName}
+3- Addresse : {client.Address}
+4- Date de naissance : {client.BirthDate}
+5- Numéro de téléphone : {client.PhoneNumber}
+6- Confirmer ");
+        do
+        {
+            verif = int.TryParse(Console.ReadLine(), out choixModif);
+        } while (!verif || choixModif < 1 || choixModif > 6);
+
+
+        switch (choixModif)
+        {
+            case 1:
+                Console.WriteLine("Encodez son nouveau prénom :");
+                client.FirstName = Console.ReadLine();
+                break;
+            case 2:
+                Console.WriteLine("Encodez son nouveau nom :");
+                client.LastName = Console.ReadLine();
+                break;
+            case 3:
+                Console.WriteLine("Encodez sa nouvelle addresse :");
+                client.Address = Console.ReadLine();
+                break;
+            case 4:
+                Console.WriteLine("Encodez sa nouvelle date de naissance :");
+                client.BirthDate = Convert.ToDateTime(Console.ReadLine());
+                break;
+            case 5:
+                Console.WriteLine("Encodez son nouveau numéro de téléphone :");
+                client.PhoneNumber = Console.ReadLine();
+                break;
+            case 6:
+                quit = true;
+                break;
+            default:
+                break;
+        }
+        Console.Clear();
+
+    } while (!quit);
+
+    clientDB.Update(client);
+}
+
+Client ChoiceClient()
+{
+    int cpt = 1;
+    int choix;
+
+
+    foreach(Client clienttmp in clients)
+    {
+        Console.WriteLine($"{cpt} : Prénom : {clienttmp.FirstName} Nom : {clienttmp.LastName}");
+        cpt++;
+    }
+    do {
+        Console.WriteLine("Quel client souhaitez vous modifier ?");
+        verif = int.TryParse(Console.ReadLine(), out choix);
+    } while (!verif || choix < 1 || choix > clients.Count());
+
+    return clients[choix - 1];
 }
